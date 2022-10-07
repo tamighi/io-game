@@ -1,10 +1,10 @@
 import React from "react"
+import { downloadAssets } from "../assets/assets";
 import '../css/main.css';
 
 export const Canvas = () => {
     /* Initialize Canvas */
     const canvasRef = React.useRef<HTMLCanvasElement | null>(null);
-
     const context = React.useRef<CanvasRenderingContext2D | null>(null);
 
     const  setCanvasDimensions = () => {
@@ -41,14 +41,31 @@ export const Canvas = () => {
     
     //  On mount
     React.useEffect(setCanvasDimensions, []);
-    React.useEffect(getCanvasContext, []);
+    
     React.useEffect(setCanvasBackground, []);
+    React.useEffect(getCanvasContext, []);
+
+    const [hidden, setHidden] = React.useState<boolean>(true);
+    React.useEffect(() => {
+        const download = async () => {
+            await downloadAssets();
+            setHidden(false);
+        }
+        download();
+    }, []);
 
     //  On resize
     window.addEventListener('resize', setCanvasDimensions);
     window.addEventListener('resize', setCanvasBackground);
 
     return (
-        <canvas id="game-canvas" ref={canvasRef}/>
+        <>
+        <canvas id="game-canvas" ref={canvasRef}>
+
+        </canvas>
+        <div className={hidden? 'hidden' : ''} id="test">
+            Test
+        </div>
+        </>
     )
 }
