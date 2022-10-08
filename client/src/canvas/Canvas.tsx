@@ -2,6 +2,7 @@ import React from "react"
 import { downloadAssets } from "./assets/assets";
 import { stopPlaying, setCanvasDimensions, startPlaying } from "./render/render";
 import '../css/main.css';
+import { connect } from "../networking/networking";
 
 export const Canvas = () => {
 
@@ -26,15 +27,11 @@ export const Canvas = () => {
 
     React.useEffect(getCanvasContext, []);
 
-    /* Menu hidden till we load images */
+    // Menu hidden till we load images
     const [hiddenMenu, setHiddenMenu] = React.useState<boolean>(true);
 
     React.useEffect(() => {
-        const download = async () => {
-            await downloadAssets();
-            setHiddenMenu(false);
-        }
-        download();
+        Promise.all([downloadAssets(), connect()]).then(() => setHiddenMenu(false));
     }, []);
 
     /* On window resize */
@@ -59,7 +56,7 @@ export const Canvas = () => {
             <input type="text" id="username-input" placeholder="Username" />
             <button id="play-button" onClick={onPlayClick}>PLAY</button>
         </div>
-        
+
         </>
     )
 }
