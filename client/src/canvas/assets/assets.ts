@@ -3,6 +3,7 @@ const CAT_ASSETS: string[] = [
 ];
 
 const DOG_ASSETS: string[] = [
+  ...Array.from({length: 10}, (x, i) => `dog/Idle (${i + 1}).png`)
 ];
 
 const assets = new Map<string, HTMLImageElement>();
@@ -19,7 +20,10 @@ const downloadAsset = (assetName : string): Promise<void> => {
     });
 }
 
-const downloadPromise = Promise.all([CAT_ASSETS.map(downloadAsset), DOG_ASSETS.map(downloadAsset)]);
+const downloadPromise = Promise.all([
+  CAT_ASSETS.map(downloadAsset), 
+  DOG_ASSETS.map(downloadAsset)
+]);
 
 export const downloadAssets = () => downloadPromise;
 

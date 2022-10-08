@@ -39,9 +39,10 @@ export const Canvas = () => {
 
     /* On window resize */
 
-    window.addEventListener('resize', () => {
-        setCanvasDimensions();
-    });
+    React.useEffect(() => {
+        window.addEventListener('resize', setCanvasDimensions);
+        return () => window.removeEventListener('resize', setCanvasDimensions);
+    }, []);
 
     /* Play */
 
