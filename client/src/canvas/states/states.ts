@@ -1,14 +1,4 @@
-interface Player {
-  x: number;
-  y: number;
-  dir: number;
-  id: string;
-}
-
-interface SentUpdate {
-  time: number;
-  me : Player;
-};
+import { Player, SentUpdate } from "../interfaces/interfaces";
 
 const RENDER_DELAY = 100;
 
@@ -68,7 +58,7 @@ function interpolateObject(object1: Player, object2: Player, ratio: number) {
     dir: interpolateDirection(object1.dir, object2.dir, ratio),
     x: object1.x + (object2.x - object1.x) * ratio,
     y: object1.y + (object2.y - object1.y) * ratio,
-    id: object1.id
+    id: object1.id,
   };
 
   return interpolated;

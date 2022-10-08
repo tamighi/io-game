@@ -1,13 +1,7 @@
 import { Constants } from "../../constants/constants";
 import { getAsset } from "../assets/assets";
+import { Player } from "../interfaces/interfaces";
 import { getCurrentState } from "../states/states";
-
-interface Player {
-  x: number;
-  y: number;
-  dir: number;
-  id: string;
-}
 
 let canvas: HTMLCanvasElement | null;
 let context: CanvasRenderingContext2D | null;
@@ -25,7 +19,7 @@ function renderBackground(x: number, y: number) {
     Constants.MAP_SIZE / 10,
     backgroundX,
     backgroundY,
-    Constants.MAP_SIZE / 2 
+    Constants.MAP_SIZE / 2
   );
   gradient.addColorStop(0, "black");
   gradient.addColorStop(1, "grey");
@@ -47,29 +41,34 @@ function renderPlayer(me: Player) {
   const canvasY = canvas.height / 2;
 
   context.save();
-  context.translate(canvasX, canvasY)
+  context.translate(canvasX, canvasY);
   context.rotate(me.dir);
   context.drawImage(
-    image, 
-    -Constants.PLAYER_RADIUS, 
-    -Constants.PLAYER_RADIUS, 
-    Constants.PLAYER_RADIUS * 2, 
+    image,
+    -Constants.PLAYER_RADIUS,
+    -Constants.PLAYER_RADIUS,
+    Constants.PLAYER_RADIUS * 2,
     Constants.PLAYER_RADIUS * 2
   );
   context.restore();
 }
 
 function render() {
-  const {me} = getCurrentState();
+  const { me } = getCurrentState();
 
   if (me && context && canvas) {
     renderBackground(me.x, me.y);
-    context.strokeStyle = 'black';
+    context.strokeStyle = "black";
     context.lineWidth = 1;
-    context.strokeRect(canvas.width / 2 - me.x, canvas.height / 2 - me.y, Constants.MAP_SIZE, Constants.MAP_SIZE);
+    context.strokeRect(
+      canvas.width / 2 - me.x,
+      canvas.height / 2 - me.y,
+      Constants.MAP_SIZE,
+      Constants.MAP_SIZE
+    );
     renderPlayer(me);
   }
-  
+
   animationFrameRequestId = requestAnimationFrame(render);
 }
 
