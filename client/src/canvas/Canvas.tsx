@@ -53,13 +53,13 @@ export const Canvas = () => {
 
     return (
         <>
-        <canvas id="game-canvas" ref={canvasRef}>
+        <canvas id="game-canvas" ref={canvasRef}/>
 
-        </canvas>
         <div className={hiddenMenu? 'hidden' : ''} id="play-menu">
             <input type="text" id="username-input" placeholder="Username" />
             <button id="play-button" onClick={onPlayClick}>PLAY</button>
         </div>
+        
         </>
     )
 }
