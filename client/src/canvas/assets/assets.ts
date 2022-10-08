@@ -1,15 +1,5 @@
-const CAT_ASSETS: string[] = [
-  ...Array.from({length: 10}, (x, i) => `cat/Dead (${i + 1}).png`),
-  ...Array.from({length: 8}, (x, i) => `cat/Fall (${i + 1}).png`),
-  ...Array.from({length: 10}, (x, i) => `cat/Hurt (${i + 1}).png`),
-  ...Array.from({length: 10}, (x, i) => `cat/Idle (${i + 1}).png`),
-  ...Array.from({length: 8}, (x, i) => `cat/Jump (${i + 1}).png`),
-  ...Array.from({length: 8}, (x, i) => `cat/Run (${i + 1}).png`),
-  ...Array.from({length: 10}, (x, i) => `cat/Slide (${i + 1}).png`),
-  ...Array.from({length: 10}, (x, i) => `cat/Walk (${i + 1}).png`),
-];
-
-const DOG_ASSETS: string[] = [
+const ASSETS: string[] = [
+  'ship.svg'
 ];
 
 const assets = new Map<string, HTMLImageElement>();
@@ -25,10 +15,7 @@ const downloadAsset = (assetName : string): Promise<void> => {
     });
 }
 
-const downloadPromise = Promise.all([
-  CAT_ASSETS.map(downloadAsset), 
-  DOG_ASSETS.map(downloadAsset)
-]);
+const downloadPromise = Promise.all(ASSETS.map(downloadAsset));
 
 export const downloadAssets = () => downloadPromise;
 
