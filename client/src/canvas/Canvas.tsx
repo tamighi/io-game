@@ -1,8 +1,9 @@
 import React from "react"
 import { downloadAssets } from "./assets/assets";
-import { stopPlaying, setCanvasDimensions, startPlaying } from "./render/render";
+import { stopRendering, setCanvasDimensions, startRendering, setCanvasRefs } from "./render/render";
 import '../css/main.css';
-import { connect } from "../networking/networking";
+import { connect, WebsocketContext } from "../networking/networking";
+import { startCapturingInput, stopCapturingInput } from "./input/input";
 
 export const Canvas = () => {
 
@@ -16,14 +17,14 @@ export const Canvas = () => {
     };
     
     /* On canvas mount */
-
+    
     React.useEffect(() => {
-        setCanvasDimensions();
+        setCanvasRefs(canvasRef?.current, context?.current)
     }, []);
 
-    React.useEffect(() => {
-        stopPlaying(canvasRef?.current, context?.current);
-    }, []);
+    React.useEffect(setCanvasDimensions, []);
+
+    React.useEffect(stopRendering, []);
 
     React.useEffect(getCanvasContext, []);
 
@@ -43,13 +44,29 @@ export const Canvas = () => {
 
     /* Play */
 
+    const socket = React.useContext(WebsocketContext);
+    
+    React.useEffect(() => {
+        socket.on("onGameOver", () => {
+            setHiddenMenu(false);
+            stopRendering();
+            stopCapturingInput();
+        });
+        return () => {
+            socket.off("onGameOver");
+        };
+    }, [socket]);
+
     const onPlayClick = () => {
+        socket.emit('play');
         setHiddenMenu(true);
-        startPlaying();
+        startRendering();
+        startCapturingInput();
     }
 
     return (
         <>
+
         <canvas id="game-canvas" ref={canvasRef}/>
 
         <div className={hiddenMenu? 'hidden' : ''} id="play-menu">

@@ -1,3 +1,4 @@
+import { MAP_SIZE } from "../../constants/constants";
 import { getAsset } from "../assets/assets";
 
 const Constants = require('../../constants/constants');
@@ -12,8 +13,8 @@ function renderBackground(){
         return ;
     }
     const gradient = context.createRadialGradient(
-        canvas.width / 2, canvas.height / 2, canvas.width / 10, 
-        canvas.width / 2, canvas.height / 2, canvas.width / 2
+        canvas.width / 2, canvas.height / 2, MAP_SIZE / 10, 
+        canvas.width / 2, canvas.height / 2, MAP_SIZE / 2
     );
     gradient.addColorStop(0, "black");
     gradient.addColorStop(1, "grey");
@@ -51,18 +52,20 @@ function renderMenu() {
     animationFrameRequestId = requestAnimationFrame(renderMenu);
 }
 
-export function stopPlaying(
+export function setCanvasRefs(
     newCanvas: HTMLCanvasElement | null,
     newContext: CanvasRenderingContext2D | null
 ) {
     canvas = newCanvas;
     context = newContext;
+}
 
+export function stopRendering() {
     cancelAnimationFrame(animationFrameRequestId);
     animationFrameRequestId = requestAnimationFrame(renderMenu);
 }
 
-export function startPlaying() {
+export function startRendering() {
     cancelAnimationFrame(animationFrameRequestId);
     animationFrameRequestId = requestAnimationFrame(render);
 }
